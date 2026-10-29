@@ -22,6 +22,17 @@ CampusOps is a deliberately simple college placement portal MVP connecting stude
 
 Seed users use the password `Password123!`: `admin@campusops.test`, `recruiter1@campusops.test`, and `student1@campusops.test`.
 
+## Docker Compose
+
+The DevOps phase includes a local container stack with MongoDB, the API, and the frontend. Create a root `.env` containing `JWT_SECRET=replace-with-a-long-random-secret`, then run:
+
+```bash
+docker compose up --build -d
+docker compose exec backend node src/seed.js
+```
+
+Open `http://localhost:5173`. Stop the stack with `docker compose down`; add `-v` only when you intentionally want to remove the MongoDB volume.
+
 ## API overview
 
 Authentication is available at `/api/auth`; jobs at `/api/jobs`; student applications at `/api/applications`; admin reporting at `/api/admin`. Protected endpoints use a JWT bearer token and role authorization.
