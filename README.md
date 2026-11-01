@@ -1,6 +1,10 @@
 # CampusOps
 
+[![CampusOps CI](https://github.com/Bhavesh1412/CampusOps/actions/workflows/ci.yml/badge.svg)](https://github.com/Bhavesh1412/CampusOps/actions/workflows/ci.yml)
+
 CampusOps is a deliberately simple college placement portal MVP connecting students, recruiters, and administrators.
+
+See [CICD.md](CICD.md) for the GitHub Actions and Docker CI/CD guide.
 
 ## Stack
 

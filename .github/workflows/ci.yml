@@ -1,0 +1,52 @@
+name: CampusOps CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install backend dependencies
+        run: npm ci --prefix backend
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      - name: Check backend syntax
+        shell: bash
+        run: |
+          for file in backend/src/*.js; do
+            node --check "$file"
+          done
+
+      - name: Build frontend
+        run: npm run build --prefix frontend
+
+      - name: Validate Docker Compose
+        env:
+          JWT_SECRET: ci-validation-secret
+        run: docker compose config --quiet
+
+      - name: Build Docker images
+        env:
+          JWT_SECRET: ci-validation-secret
+        run: docker compose build
